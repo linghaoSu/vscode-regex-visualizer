@@ -1,0 +1,16 @@
+{
+  "extends": [ "@antfu" ],
+  "rules": {
+    "semi": "off",
+    "@typescript-eslint/semi": [ "error", "always" ],
+    "curly": [ "error", "all" ]
+  },
+  "overrides": [
+    {
+      "files": [ "**/*.ts" ],
+      "rules": {
+        "curly": "error"
+      }
+    }
+  ]
+}

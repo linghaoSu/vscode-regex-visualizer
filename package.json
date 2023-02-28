@@ -1,0 +1,83 @@
+{
+  "publisher": "linghaosu",
+  "author": {
+    "email": "slh001@live.cn",
+    "name": "linghao.su"
+  },
+  "name": "vscode-ext-sample",
+  "displayName": "VSCode Template Sample",
+  "version": "0.0.1",
+  "packageManager": "pnpm@7.0.1",
+  "description": "",
+  "license": "MIT",
+  "main": "./dist/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/linghaoSu/i18n-auto-replace"
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "vscode": "^1.68.0"
+  },
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "scripts": {
+    "dev": "pnpm build --watch",
+    "pack": "vsce package --no-dependencies",
+    "lint": "eslint .",
+    "test": "vitest",
+    "build": "tsup src/index.ts --external vscode",
+    "release": "bumpp --commit --push --tag && pnpm publish",
+    "publish": "vsce publish --no-dependencies",
+    "typecheck": "tsc --noEmit",
+    "vscode:prepublish": "pnpm build"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^0.25.1",
+    "@babel/types": "^7.18.4",
+    "@types/node": "^17.0.41",
+    "@types/vscode": "^1.68.0",
+    "bumpp": "^7.1.1",
+    "eslint": "^8.17.0",
+    "esno": "^0.16.3",
+    "pnpm": "^7.1.9",
+    "tsup": "^6.1.0",
+    "rimraf": "^3.0.2",
+    "typescript": "^4.7.3",
+    "vite": "^2.9.11",
+    "vitest": "^0.14.1",
+    "vsce": "^2.9.1"
+  },
+  "contributes": {
+    "configuration": {
+      "title": "sample-ext",
+      "properties": {
+        "i18n-auto-replace.ext": {
+          "type": "array",
+          "default": [
+            "vue"
+          ],
+          "description": "这里是一个描述，但这个区域用来描述配置信息，写在 settings 里的，可以设置为枚举类型或是别的，也可以提供默认值"
+        }
+      }
+    },
+    "commands": [
+      {
+        "command": "sample-ext.sample-command",
+        "title": "注册命令用，可以绑定在快捷键上，可以 cmd+shift+p 后输入选中使用"
+      }
+    ],
+    "menus": {
+      "explorer/context": [
+        {
+          "command": "sample-ext.sample-command",
+          "title": "这里在文件目录的区域注册右键菜单，可以调用上面注册的命令",
+          "group": "sample-ext"
+        }
+      ]
+    }
+  }
+}
