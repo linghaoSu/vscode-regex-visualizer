@@ -1,6 +1,5 @@
 import { type OutputChannel, window } from 'vscode';
-
-const EXT_NAME = 'I18n Auto Replace';
+import { EXT_NAME } from './constant';
 
 export class Log {
   private static _channel: OutputChannel;
@@ -16,7 +15,7 @@ export class Log {
     this.outputChannel.appendLine(values.map(i => i.toString()).join(' '));
   }
 
-  static info(message: string, intend = 0) {
+  static info(message: string | number, intend = 0) {
     this.outputChannel.appendLine(`${'\t'.repeat(intend)}${message}`);
   }
 

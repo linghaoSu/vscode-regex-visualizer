@@ -3,7 +3,8 @@
   "rules": {
     "semi": "off",
     "@typescript-eslint/semi": [ "error", "always" ],
-    "curly": [ "error", "all" ]
+    "curly": [ "error", "all" ],
+    "@typescript-eslint/brace-style": [ "error", "1tbs" ]
   },
   "overrides": [
     {
@@ -12,5 +13,6 @@
         "curly": "error"
       }
     }
-  ]
+  ],
+  "ignorePatterns": [ "snapsvg", "grammar.js" ]
 }

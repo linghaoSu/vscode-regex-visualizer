@@ -7,7 +7,11 @@ export default defineConfig({
   format: ['cjs'],
   shims: false,
   dts: false,
+  sourcemap: true,
   external: [
     'vscode',
   ],
+  loader: {
+    '.peg': 'text',
+  },
 });
