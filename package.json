@@ -6,7 +6,7 @@
   },
   "name": "regex-visualizer",
   "displayName": "Regex Visualizer",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "packageManager": "pnpm@7.0.1",
   "description": "",
   "license": "MIT",
