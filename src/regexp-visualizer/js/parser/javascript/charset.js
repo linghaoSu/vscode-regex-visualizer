@@ -37,7 +37,7 @@ export default {
     });
 
     // Label the part container.
-    return this.renderLabeledBox(this.label, this.partContainer, {
+    return await this.renderLabeledBox(this.label, this.partContainer, {
       padding: 5,
     });
   },
