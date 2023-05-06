@@ -20,7 +20,7 @@ jobs:
           version: v7.15.0
       - run: pnpm install
       - run: pnpm build
-      - run: pnpm publish
+      - run: pnpm run publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
           VSCE_PAT: ${{ secrets.VSCE_PAT }}
