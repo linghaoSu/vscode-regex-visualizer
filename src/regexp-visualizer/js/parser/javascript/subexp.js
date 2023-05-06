@@ -39,7 +39,7 @@ export default {
     // Render the contained regexp.
     await this.regexp.render(this.container.group());
     // Create the labeled box around the regexp.
-    this.renderLabeledBox(label, this.regexp, {
+    return await this.renderLabeledBox(label, this.regexp, {
       padding: 10,
     });
   },

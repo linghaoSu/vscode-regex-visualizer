@@ -1,7 +1,7 @@
 // Regexp nodes are the entire regular expression. They consist of a collection
 // of [Match](./match.html) nodes separated by `|`.
 
-import { first, flatten, last, map } from 'lodash-unified';
+import { compact, first, flatten, last, map } from 'lodash-unified';
 import Snap from '../../../../snapsvg/snapsvg';
 import util from '../../util.js';
 
@@ -17,7 +17,7 @@ export default {
 
     // Renders each match into the match container.
     const promiseHandlerList = map(this.matches,
-      match => match.render(matchContainer.group()),
+      async match => await match.render(matchContainer.group()),
     );
     const rst = await Promise.all(promiseHandlerList);
     let containerBox,
@@ -39,7 +39,7 @@ export default {
 
     // Render connector paths.
     this.container.prepend(
-      this.container.path(flatten(paths).compact().values().join('')));
+      this.container.path(compact(flatten(paths)).join('')));
 
     containerBox = matchContainer.getBBox?.();
 
