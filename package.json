@@ -30,7 +30,7 @@
     "lint": "eslint .",
     "test": "vitest",
     "build": "tsup src/index.ts --external vscode",
-    "release": "bumpp --commit --push --tag && pnpm publish",
+    "release": "bumpp --commit --push --tag",
     "publish": "vsce publish --no-dependencies",
     "typecheck": "tsc --noEmit",
     "vscode:prepublish": "pnpm build"
