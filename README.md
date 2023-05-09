@@ -7,6 +7,11 @@
 
 Aim to visualize regex to easy understand complex regex
 
+The regular visualization method comes from this [project](https://gitlab.com/javallone/regexper-static)
+
+The regularity used to detect regular expressions comes from this [project](https://github.com/chrmarti/vscode-regex/blob/41062efe8aa5113e8902742ae270e090a3de5c5e/src/extension.ts#L14)
+
+
 ## License
 
 [MIT](./LICENSE) License © 2022
