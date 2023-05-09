@@ -27,8 +27,7 @@ export function getWorkspaceInfo() {
       info.schemaPath = `${folder.uri.toString()}${sep}`;
       info.uri = folder.uri;
     }
-  }
-  else {
+  } else {
     return false;
   }
   return info;
@@ -36,22 +35,30 @@ export function getWorkspaceInfo() {
 
 export function isTargetFile(path: string) {
   // only check vue file for now
-  if (/.*\.vue$/.test(path)) { return true; }
+  if (/.*\.vue$/.test(path)) {
+    return true;
+  }
   return false;
 }
 
 export function getRelativePath(path: string) {
   const info = getWorkspaceInfo();
-  if (!info) { return false; }
+  if (!info) {
+    return false;
+  }
 
-  if (path.startsWith(info.schemaPath)) { return path.slice((info.schemaPath).length); }
+  if (path.startsWith(info.schemaPath)) {
+    return path.slice((info.schemaPath).length);
+  }
 
   return path;
 }
 
 export function getAbsoluteUri(path: string[]) {
   const info = getWorkspaceInfo();
-  if (!info || !info.uri) { return false; }
+  if (!info || !info.uri) {
+    return false;
+  }
 
   return Uri.joinPath(info.uri, ...path);
 }

@@ -45,7 +45,9 @@ export class Log {
         : `${EXT_NAME} Error: ${err.toString()}`;
 
       const result = await window.showErrorMessage(message, openOutputButton);
-      if (result === openOutputButton) { this.show(); }
+      if (result === openOutputButton) {
+        this.show();
+      }
     }
   }
 
