@@ -17,4 +17,4 @@ Hover over a regular expression to display:
 
 ## License
 
-[MIT](./LICENSE) License © 2022
+[MIT](./LICENSE) License © 2023
