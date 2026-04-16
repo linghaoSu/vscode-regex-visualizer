@@ -34,7 +34,9 @@
     "check": "pnpm run typecheck && pnpm run lint",
     "changelog": "changelogen --output CHANGELOG.md --no-commit",
     "release": "pnpm run check && bumpp --commit --push --tag --all --execute \"pnpm run changelog\"",
+    "release:pre": "pnpm run check && bumpp prerelease --preid beta --commit --push --tag --all --execute \"pnpm run changelog\"",
     "publish": "vsce publish --no-dependencies",
+    "publish:pre": "vsce publish --pre-release --no-dependencies",
     "typecheck": "tsc --noEmit",
     "vscode:prepublish": "pnpm build"
   },

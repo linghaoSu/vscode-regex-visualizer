@@ -22,20 +22,33 @@ jobs:
           registry-url: https://registry.npmjs.org/
           cache: pnpm
 
+      - name: Detect prerelease
+        id: meta
+        run: |
+          if [[ "${{ github.ref_name }}" == *-* ]]; then
+            echo "prerelease=true" >> "$GITHUB_OUTPUT"
+            echo "flag=--pre-release" >> "$GITHUB_OUTPUT"
+          else
+            echo "prerelease=false" >> "$GITHUB_OUTPUT"
+            echo "flag=" >> "$GITHUB_OUTPUT"
+          fi
+
       - run: pnpm install --frozen-lockfile
       - run: pnpm run check
       - run: pnpm run build
+
       - name: Package VSIX
-        run: pnpm exec vsce package --no-dependencies --out regex-visualizer-${{ github.ref_name }}.vsix
+        run: pnpm exec vsce package ${{ steps.meta.outputs.flag }} --no-dependencies --out regex-visualizer-${{ github.ref_name }}.vsix
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           files: regex-visualizer-${{ github.ref_name }}.vsix
           generate_release_notes: true
+          prerelease: ${{ steps.meta.outputs.prerelease }}
 
       - name: Publish to VS Code Marketplace
-        run: pnpm exec vsce publish --no-dependencies --packagePath regex-visualizer-${{ github.ref_name }}.vsix
+        run: pnpm exec vsce publish ${{ steps.meta.outputs.flag }} --no-dependencies --packagePath regex-visualizer-${{ github.ref_name }}.vsix
         env:
           VSCE_PAT: ${{ secrets.VSCE_PAT }}
 
@@ -47,5 +60,5 @@ jobs:
             echo "OVSX_PAT not configured, skipping Open VSX publish."
             exit 0
           fi
-          npx -y ovsx publish regex-visualizer-${{ github.ref_name }}.vsix -p "$OVSX_PAT"
+          npx -y ovsx publish ${{ steps.meta.outputs.flag }} regex-visualizer-${{ github.ref_name }}.vsix -p "$OVSX_PAT"
         continue-on-error: true
