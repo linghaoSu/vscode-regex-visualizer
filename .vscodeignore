@@ -13,6 +13,6 @@ pnpm-workspace.yaml
 src
 test
 tsconfig.json
-tsup.config.ts
+tsdown.config.ts
 **/*.map
 resources/icon.svg

@@ -10,7 +10,8 @@ export default antfu({
     semi: true,
   },
   rules: {
-    curly: ['error', 'all'],
+    'curly': ['error', 'all'],
+    'pnpm/yaml-enforce-settings': 'off',
   },
   ignores: [
     'dist',

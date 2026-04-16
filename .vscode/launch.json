@@ -12,7 +12,7 @@
         "${workspaceFolder}/playground"
       ],
       "outFiles": [
-        "${workspaceFolder}/dist/**/*.js"
+        "${workspaceFolder}/dist/**/*.{js,cjs}"
       ],
       "preLaunchTask": "npm: dev"
     }

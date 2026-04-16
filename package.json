@@ -14,7 +14,7 @@
     "type": "git",
     "url": "https://github.com/linghaoSu/vscode-regex-visualizer"
   },
-  "main": "./dist/index.js",
+  "main": "./dist/index.cjs",
   "icon": "resources/icon.png",
   "files": [
     "dist",
@@ -28,11 +28,11 @@
     "onStartupFinished"
   ],
   "scripts": {
-    "dev": "pnpm build --watch",
+    "dev": "tsdown --watch",
     "pack": "vsce package --no-dependencies",
     "lint": "eslint .",
     "test": "vitest",
-    "build": "tsup src/index.ts --external vscode",
+    "build": "tsdown",
     "check": "pnpm run typecheck && pnpm run lint",
     "changelog": "changelogen --output CHANGELOG.md --no-commit",
     "release": "pnpm run check && bumpp --commit --push --tag --all --execute \"pnpm run changelog\"",
@@ -44,22 +44,18 @@
   },
   "devDependencies": {
     "@antfu/eslint-config": "^8.2.0",
-    "@types/node": "^22.0.0",
+    "@types/node": "^25.6.0",
     "@types/vscode": "^1.68.0",
+    "@vscode/vsce": "^3.9.0",
     "bumpp": "^11.0.1",
     "changelogen": "^0.6.2",
-    "eslint": "^9.17.0",
-    "esno": "^0.16.3",
+    "eslint": "^10.2.0",
     "happy-dom": "^8.9.0",
     "lodash-es": "^4.17.21",
     "lodash-unified": "^1.0.3",
-    "rimraf": "^3.0.2",
-    "snapsvg": "^0.5.1",
-    "svg-path-bbox": "^1.2.4",
-    "tsup": "^6.1.0",
-    "typescript": "^4.7.3",
-    "vite": "^2.9.11",
-    "vitest": "^0.14.1",
-    "vsce": "^2.9.1"
+    "svg-path-bbox": "^2.1.0",
+    "tsdown": "^0.21.8",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.4"
   }
 }
