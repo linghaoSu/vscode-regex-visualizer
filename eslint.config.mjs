@@ -16,6 +16,7 @@ export default antfu({
     'dist',
     'node_modules',
     'pnpm-lock.yaml',
+    'playground/**',
     'src/snapsvg/**',
     'src/regexp-visualizer/**',
   ],

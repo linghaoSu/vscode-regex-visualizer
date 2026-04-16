@@ -1,0 +1,6 @@
+{
+  "name": "regex-visualizer-playground",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Sandbox files for manually testing regex-visualizer inside an Extension Development Host."
+}
