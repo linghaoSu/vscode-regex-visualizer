@@ -15,8 +15,10 @@
     "url": "https://github.com/linghaoSu/vscode-regex-visualizer"
   },
   "main": "./dist/index.js",
+  "icon": "resources/icon.png",
   "files": [
-    "dist"
+    "dist",
+    "resources"
   ],
   "engines": {
     "vscode": "^1.68.0",
