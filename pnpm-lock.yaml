@@ -44,8 +44,8 @@ importers:
         specifier: ^1.0.3
         version: 1.0.3(@types/lodash-es@4.17.12)(lodash-es@4.18.1)(lodash@4.18.1)
       svg-path-bbox:
-        specifier: ^2.1.0
-        version: 2.1.0
+        specifier: ^1.2.6
+        version: 1.2.6
       tsdown:
         specifier: ^0.21.8
         version: 0.21.8(synckit@0.11.12)(typescript@5.9.3)
@@ -2587,8 +2587,8 @@ packages:
     resolution: {integrity: sha512-zFObLMyZeEwzAoKCyu1B91U79K2t7ApXuQfo8OuxwXLDgcKxuwM+YvcbIhm6QWqz7mHUH1TVytR1PwVVjEuMig==}
     engines: {node: '>=14.18'}
 
-  svg-path-bbox@2.1.0:
-    resolution: {integrity: sha512-PEoSQFbBvL7FOCE4cN8Knej6L7bXdNkjPcUYsfMMpq0HpnqiO0sE2mcXTd7LX160aOyh5HbaeN/SoY8thMk5Kg==}
+  svg-path-bbox@1.2.6:
+    resolution: {integrity: sha512-jKkQcvBrjUdzDFOIas2E1g5ICVdZ/YdjDjhvwbfXRYmodN3qIR6pBAzQhLEpn11cb1Q2Hn+ufFqER5wDHr6osg==}
     engines: {node: '>=6.17.1'}
     hasBin: true
 
@@ -5895,7 +5895,7 @@ snapshots:
       has-flag: 4.0.0
       supports-color: 7.2.0
 
-  svg-path-bbox@2.1.0:
+  svg-path-bbox@1.2.6:
     dependencies:
       svgpath: 2.6.0
 

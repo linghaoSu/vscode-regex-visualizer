@@ -16,10 +16,6 @@
   },
   "main": "./dist/index.cjs",
   "icon": "resources/icon.png",
-  "files": [
-    "dist",
-    "resources"
-  ],
   "engines": {
     "vscode": "^1.68.0",
     "node": ">=20"
@@ -29,7 +25,7 @@
   ],
   "scripts": {
     "dev": "tsdown --watch",
-    "pack": "vsce package --no-dependencies",
+    "pack": "vsce package --no-dependencies --allow-package-secrets privatekey",
     "lint": "eslint .",
     "test": "vitest",
     "build": "tsdown",
@@ -37,8 +33,8 @@
     "changelog": "changelogen --output CHANGELOG.md --no-commit",
     "release": "pnpm run check && bumpp --commit --push --tag --all --execute \"pnpm run changelog\"",
     "release:pre": "pnpm run check && bumpp prerelease --preid beta --commit --push --tag --all --execute \"pnpm run changelog\"",
-    "publish": "vsce publish --no-dependencies",
-    "publish:pre": "vsce publish --pre-release --no-dependencies",
+    "publish": "vsce publish --no-dependencies --allow-package-secrets privatekey",
+    "publish:pre": "vsce publish --pre-release --no-dependencies --allow-package-secrets privatekey",
     "typecheck": "tsc --noEmit",
     "vscode:prepublish": "pnpm build"
   },
@@ -53,7 +49,7 @@
     "happy-dom": "^8.9.0",
     "lodash-es": "^4.17.21",
     "lodash-unified": "^1.0.3",
-    "svg-path-bbox": "^2.1.0",
+    "svg-path-bbox": "^1.2.6",
     "tsdown": "^0.21.8",
     "typescript": "^5.9.3",
     "vitest": "^4.1.4"

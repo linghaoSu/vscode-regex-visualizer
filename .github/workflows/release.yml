@@ -38,7 +38,7 @@ jobs:
       - run: pnpm run build
 
       - name: Package VSIX
-        run: pnpm exec vsce package ${{ steps.meta.outputs.flag }} --no-dependencies --out regex-visualizer-${{ github.ref_name }}.vsix
+        run: pnpm exec vsce package ${{ steps.meta.outputs.flag }} --no-dependencies --allow-package-secrets privatekey --out regex-visualizer-${{ github.ref_name }}.vsix
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
@@ -48,7 +48,7 @@ jobs:
           prerelease: ${{ steps.meta.outputs.prerelease }}
 
       - name: Publish to VS Code Marketplace
-        run: pnpm exec vsce publish ${{ steps.meta.outputs.flag }} --no-dependencies --packagePath regex-visualizer-${{ github.ref_name }}.vsix
+        run: pnpm exec vsce publish ${{ steps.meta.outputs.flag }} --no-dependencies --allow-package-secrets privatekey --packagePath regex-visualizer-${{ github.ref_name }}.vsix
         env:
           VSCE_PAT: ${{ secrets.VSCE_PAT }}
 
