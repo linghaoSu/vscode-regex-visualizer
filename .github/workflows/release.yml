@@ -1,0 +1,51 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org/
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run check
+      - run: pnpm run build
+      - name: Package VSIX
+        run: pnpm exec vsce package --no-dependencies --out regex-visualizer-${{ github.ref_name }}.vsix
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: regex-visualizer-${{ github.ref_name }}.vsix
+          generate_release_notes: true
+
+      - name: Publish to VS Code Marketplace
+        run: pnpm exec vsce publish --no-dependencies --packagePath regex-visualizer-${{ github.ref_name }}.vsix
+        env:
+          VSCE_PAT: ${{ secrets.VSCE_PAT }}
+
+      - name: Publish to Open VSX
+        env:
+          OVSX_PAT: ${{ secrets.OVSX_PAT }}
+        run: |
+          if [ -z "$OVSX_PAT" ]; then
+            echo "OVSX_PAT not configured, skipping Open VSX publish."
+            exit 0
+          fi
+          npx -y ovsx publish regex-visualizer-${{ github.ref_name }}.vsix -p "$OVSX_PAT"
+        continue-on-error: true
