@@ -2,7 +2,7 @@
 // the site use some functions defined in this file.
 import { defaults, map, reduce } from 'lodash-unified';
 import Snap from '../../snapsvg/snapsvg';
-import { mockDocument as document } from '../../constant';
+import { mockDocument as document } from '../../mock-dom';
 
 // Generate an `Event` object for triggering a custom event.
 //

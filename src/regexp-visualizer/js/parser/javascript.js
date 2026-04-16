@@ -6,7 +6,7 @@
 
 import { defaults, union, without } from 'lodash-unified';
 import Snap from '../../../snapsvg/snapsvg';
-import { mockDocument as document } from '../../../constant';
+import { mockDocument as document } from '../../../mock-dom';
 import util from '../util.js';
 import javascript from './javascript/parser.js';
 import ParserState from './javascript/parser_state.js';

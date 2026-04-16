@@ -1,7 +1,7 @@
 // The Regexper class manages the top-level behavior for the entire
 // application. This includes event handlers for all user interactions.
 
-import { mockDocument as document } from '../../constant';
+import { mockDocument as document } from '../../mock-dom';
 import util from './util.js';
 import Parser from './parser/javascript.js';
 

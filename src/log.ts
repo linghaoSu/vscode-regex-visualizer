@@ -1,5 +1,5 @@
 import { type OutputChannel, window } from 'vscode';
-import { EXT_NAME } from './constant';
+import { EXT_NAME } from './ext';
 
 export class Log {
   private static _channel: OutputChannel;

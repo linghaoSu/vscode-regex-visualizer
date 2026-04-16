@@ -1,156 +1,80 @@
-import type { ExtensionContext, TextDocument } from 'vscode';
-import { MarkdownString, OverviewRulerLane, Range, window, workspace } from 'vscode';
-import { disposeSettingListener, initialSetting } from './settings';
+import type { ExtensionContext, TextEditor } from 'vscode';
+import { MarkdownString, OverviewRulerLane, window, workspace } from 'vscode';
+import { EXT_NAME } from './ext';
 import { Log } from './log';
-import { EXT_NAME, baseHTMLContent, mockDocument } from './constant';
-import { svg64 } from './svg64';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-expect-error
-import Regexper from './regexp-visualizer/js/regexper.js';
+import { findRegexes } from './regex-detector';
+import { renderRegexSvg } from './regex-renderer';
 
-mockDocument.body.innerHTML = baseHTMLContent;
-interface RegexMatch {
-  document: TextDocument
-  regex: RegExp
-  range: Range
-}
+const THROTTLE_MS = 500;
 
 export function activate(context: ExtensionContext) {
-  Log.info(`${EXT_NAME} activated! `);
-  // start listening settings
-  initialSetting();
+  Log.info(`${EXT_NAME} activated!`);
 
-  const smallNumberDecorationType = window.createTextEditorDecorationType({
+  const decorationType = window.createTextEditorDecorationType({
     borderWidth: '0 0 1px 0',
     borderStyle: 'dashed',
     borderRadius: '3px',
     overviewRulerColor: 'blue',
     overviewRulerLane: OverviewRulerLane.Right,
-    textDecoration: 'ababababa',
-    before: {
-      borderColor: '#f00',
-    },
-    after: {
-      borderColor: '#00f',
-    },
-    light: {
-      // this color will be used in light color themes
-      borderColor: 'darkblue',
-    },
-    dark: {
-      // this color will be used in dark color themes
-      borderColor: 'lightblue',
-    },
+    light: { borderColor: 'darkblue' },
+    dark: { borderColor: 'lightblue' },
   });
+  context.subscriptions.push(decorationType);
 
-  let activeEditor = window.activeTextEditor;
-  const regEx = /(^|\s|[()={},:?;])(\/((?:\\\/|\[[^\]]*\]|[^/])+)\/([gimuy]*))(\s|[()={},:?;]|$)/g;
+  let pending: NodeJS.Timer | undefined;
+  let generation = 0;
 
-  async function updateDecorations() {
-    if (!activeEditor) {
+  async function updateDecorations(editor: TextEditor | undefined) {
+    if (!editor) {
       return;
     }
 
-    const matches = await findRegexes(activeEditor.document);
+    const myGen = ++generation;
+    const matches = findRegexes(editor.document);
 
-    activeEditor.setDecorations(smallNumberDecorationType, matches);
-  }
+    const decorations = await Promise.all(matches.map(async (m) => {
+      const dataUrl = await renderRegexSvg(m.regexStr);
+      const hover = new MarkdownString(
+        `<img src="${dataUrl}" /><br/>[Open in the browser](https://regexper.com/#${encodeURIComponent(m.regexStr)})`,
+      );
+      hover.isTrusted = true;
+      hover.supportHtml = true;
+      return { range: m.range, hoverMessage: hover };
+    }));
 
-  async function createRegexMatch(document: TextDocument, line: number, match: RegExpExecArray) {
-    const regex = createRegex(match[3], match[4]);
-    if (regex) {
-      const regexStr = regex.toString();
-
-      const regexper = new Regexper(mockDocument.body);
-
-      await regexper.showExpression(regexStr);
-
-      const svgParentContainer = regexper.svgContainer.querySelector('svg');
-
-      svgParentContainer.removeChild(svgParentContainer.querySelector('metadata'));
-
-      const originContent = svgParentContainer.outerHTML;
-      const base64SVGStr = svg64(originContent);
-
-      const result = base64SVGStr;
-
-      const dom = `<img src="${result}" /><br/>[Open in the browser](https://regexper.com/#${encodeURIComponent(regexStr)})`;
-      const message = new MarkdownString(dom);
-
-      message.isTrusted = true;
-      message.supportHtml = true;
-
-      return {
-        document,
-        regex,
-        range: new Range(line, match.index + match[1].length, line, match.index + match[1].length + match[2].length),
-        hoverMessage: message,
-      };
+    // Drop stale results if another update has started or the editor changed.
+    if (myGen !== generation || window.activeTextEditor !== editor) {
+      return;
     }
+
+    editor.setDecorations(decorationType, decorations);
   }
 
-  function createRegex(pattern: string, flags: string) {
-    try {
-      return new RegExp(pattern, flags);
-    } catch (e) {
-      // discard
-    }
-  }
-
-  async function findRegexes(document: TextDocument) {
-    const matches: RegexMatch[] = [];
-    for (let i = 0; i < document.lineCount; i++) {
-      const line = document.lineAt(i);
-      let match: RegExpExecArray | null;
-      const regex = regEx;
-      regex.lastIndex = 0;
-      const text = line.text.substr(0, 1000);
-      // eslint-disable-next-line no-cond-assign
-      while ((match = regex.exec(text))) {
-        const result = await createRegexMatch(document, i, match);
-        if (result) {
-          matches.push(result);
-        }
-      }
-    }
-    return matches;
-  }
-
-  let timeout: NodeJS.Timer | undefined;
-
-  function triggerUpdateDecorations(throttle = false) {
-    if (timeout) {
-      clearTimeout(timeout);
-      timeout = undefined;
+  function scheduleUpdate(editor: TextEditor | undefined, throttle: boolean) {
+    if (pending) {
+      clearTimeout(pending);
+      pending = undefined;
     }
     if (throttle) {
-      timeout = setTimeout(updateDecorations, 500);
+      pending = setTimeout(() => updateDecorations(editor), THROTTLE_MS);
     } else {
-      updateDecorations();
+      updateDecorations(editor);
     }
   }
 
-  if (activeEditor) {
-    triggerUpdateDecorations();
-  }
+  scheduleUpdate(window.activeTextEditor, false);
 
-  window.onDidChangeActiveTextEditor((editor) => {
-    activeEditor = editor;
-    if (editor) {
-      triggerUpdateDecorations();
-    }
-  }, null, context.subscriptions);
-
-  workspace.onDidChangeTextDocument((event) => {
-    if (activeEditor && event.document === activeEditor.document) {
-      triggerUpdateDecorations(true);
-    }
-  }, null, context.subscriptions);
+  context.subscriptions.push(
+    window.onDidChangeActiveTextEditor(editor => scheduleUpdate(editor, false)),
+    workspace.onDidChangeTextDocument((event) => {
+      const editor = window.activeTextEditor;
+      if (editor && event.document === editor.document) {
+        scheduleUpdate(editor, true);
+      }
+    }),
+  );
 }
 
-// process exit;
 export function deactivate() {
-  disposeSettingListener();
-
-  Log.info(`${EXT_NAME} deactivate! `);
+  Log.info(`${EXT_NAME} deactivated!`);
 }
