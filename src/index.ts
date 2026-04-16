@@ -21,7 +21,7 @@ export function activate(context: ExtensionContext) {
   });
   context.subscriptions.push(decorationType);
 
-  let pending: NodeJS.Timer | undefined;
+  let pending: ReturnType<typeof setTimeout> | undefined;
   let generation = 0;
 
   async function updateDecorations(editor: TextEditor | undefined) {
@@ -56,8 +56,9 @@ export function activate(context: ExtensionContext) {
       pending = undefined;
     }
     if (throttle) {
-      pending = setTimeout(() => updateDecorations(editor), THROTTLE_MS);
-    } else {
+      pending = setTimeout(updateDecorations, THROTTLE_MS, editor);
+    }
+    else {
       updateDecorations(editor);
     }
   }

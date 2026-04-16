@@ -1,4 +1,4 @@
-import { mockWindow as window } from "../constant";
+import { mockWindow as window } from "../mock-dom";
 
 (function (glob) {
   var version = "0.5.0",

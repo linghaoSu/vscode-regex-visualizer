@@ -1,4 +1,5 @@
-import { type OutputChannel, window } from 'vscode';
+import type { OutputChannel } from 'vscode';
+import { window } from 'vscode';
 import { EXT_NAME } from './ext';
 
 export class Log {
@@ -34,7 +35,8 @@ export class Log {
         err.stack,
         err.toJSON?.(),
       ]
-        .filter(Boolean).join('\n');
+        .filter(Boolean)
+        .join('\n');
       Log.info(`🐛 ERROR: ${err.name}: ${messages}`, intend);
     }
 

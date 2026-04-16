@@ -1,20 +1,20 @@
 {
   "publisher": "linghaosu",
-  "author": {
-    "email": "slh001@live.cn",
-    "name": "linghao.su"
-  },
   "name": "regex-visualizer",
   "displayName": "Regex Visualizer",
   "version": "0.0.6",
   "packageManager": "pnpm@10.33.0",
   "description": "",
+  "author": {
+    "email": "slh001@live.cn",
+    "name": "linghao.su"
+  },
   "license": "MIT",
-  "main": "./dist/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/linghaoSu/vscode-regex-visualizer"
   },
+  "main": "./dist/index.js",
   "files": [
     "dist"
   ],
@@ -57,10 +57,5 @@
     "vite": "^2.9.11",
     "vitest": "^0.14.1",
     "vsce": "^2.9.1"
-  },
-  "pnpm": {
-    "patchedDependencies": {
-      "happy-dom@8.9.0": "patches/happy-dom@8.9.0.patch"
-    }
   }
 }

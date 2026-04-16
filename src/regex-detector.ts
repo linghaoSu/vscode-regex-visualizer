@@ -2,13 +2,15 @@ import type { TextDocument } from 'vscode';
 import { Range } from 'vscode';
 
 export interface RegexMatch {
-  regex: RegExp
-  regexStr: string
-  range: Range
+  regex: RegExp;
+  regexStr: string;
+  range: Range;
 }
 
 // Source: https://github.com/chrmarti/vscode-regex/blob/41062efe8aa5113e8902742ae270e090a3de5c5e/src/extension.ts#L14
-export const REGEX_PATTERN = /(^|\s|[()={},:?;])(\/((?:\\\/|\[[^\]]*\]|[^/])+)\/([gimuy]*))(\s|[()={},:?;]|$)/g;
+// Capped per-line scan (MAX_LINE_LENGTH) bounds the worst-case backtracking.
+// eslint-disable-next-line regexp/no-super-linear-backtracking
+export const REGEX_PATTERN = /(^|[\s()={},:?;])(\/((?:\\\/|\[[^\]]*\]|[^/])+)\/([gimuy]*))([\s()={},:?;]|$)/g;
 
 const MAX_LINE_LENGTH = 1000;
 
@@ -44,7 +46,8 @@ export function findRegexes(document: TextDocument): RegexMatch[] {
 function safeRegex(pattern: string, flags: string): RegExp | undefined {
   try {
     return new RegExp(pattern, flags);
-  } catch {
+  }
+  catch {
     return undefined;
   }
 }

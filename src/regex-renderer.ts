@@ -1,8 +1,7 @@
 import { baseHTMLContent, mockDocument } from './mock-dom';
-import { svg64 } from './svg64';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-expect-error — vendored regexper source has no types.
+// @ts-expect-error vendored regexper source has no types.
 import Regexper from './regexp-visualizer/js/regexper.js';
+import { svg64 } from './svg64';
 
 const cache = new Map<string, string>();
 
